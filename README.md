@@ -15,11 +15,13 @@ Rails provides us with tools to store passwords relatively securely, so that whe
 
 Let's imagine a `SessionsController#create` method that does very simple authentication. It goes like this:
 
+```ruby
    def create
      @user = User.find(username: params[:username])
      return head(:forbidden) unless params[:password] == @user.password
      session[:user_id] = @user.id
    end
+```
 
 We load the user row, check to see if the provided password is equal to the password stored in the database, and if it is, we set `user_id` in the `session`.
 
@@ -37,15 +39,18 @@ So how do we store passwords if we can't store passwords?
 
 We store their hashes. A *hash* is a number computed by feeding a string to a *hash function*. Hash functions have the property that they will always produce the same number given the same input. You could write one yourself. Here's one that I just made:
 
+```ruby
    # dumb_hash(input: string) -> number
    def dumb_hash(input)
      input.bytes.reduce(:+)
    end
+```
 
 My `dumb_hash` function just finds the sum of the bytes that comprise the string. It is a hash function, since it satisfies the criteria that the same string always produces the same result.
 
 We could imagine using this function to avoid storing passwords in the database. Our `User` model and `SessionsController` might look like this:
 
+```ruby
    # app/models/user.rb
    class User < ActiveRecord::Base
      def password=(new_password)
@@ -74,6 +79,7 @@ We could imagine using this function to avoid storing passwords in the database.
        session[:user_id] = @user.id
      end
    end
+```
 
 In this world, we have saved the passwords' hashes in the database, in the `password_digest` column. We are not storing the passwords themselves.
 
@@ -118,6 +124,7 @@ The solution to this problem is *salting* our passwords. A salt is a random stri
 
 So let's update our `User` model to use bcrypt:
 
+```ruby
     # Gemfile:
     gem 'bcrypt'
 
@@ -137,6 +144,7 @@ So let's update our `User` model to use bcrypt:
 	 return nil unless (salt + hashed) == self.password_digest
       end
     end
+```
 
 Our `users.password_digest` column actually stores two values: the salt, and the actual return value of BCrypt. We just concat them together in the column, and use our knowledge of the length of salts—generate_salt always produces 29 character strings—to separate them.
 
@@ -146,9 +154,11 @@ After we've loaded the User, we find the salt which we previously stored in thei
 
 You don't have to deal with all this yourself. Rails provides a method called `has_secure_password` which you can use on your ActiveRecord models to handle all this. It looks like this:
 
+```ruby
     class User < ActiveRecord::Base
       has_secure_password
     end
+```
 
 You'll need to add 'bcrypt' to your Gemfile if it isn't already.
 
@@ -158,6 +168,7 @@ You'll need to add 'bcrypt' to your Gemfile if it isn't already.
 
 These fields are designed to make it easy to include a password confirmation box when creating or updating a user. All together, our very app might look like this:
 
+```ruby
     # app/views/user/new.html.erb
     <%= form_for :user, url: '/users' do |f| %>
       Username: <%= f.text_field :username %>
@@ -192,6 +203,7 @@ These fields are designed to make it easy to include a password confirmation box
     class User < ActiveRecord::Base
       has_secure_password
     end   
+```
 
 ## Resources
   * [Wikipedia — Murmur Hash][murmur]
