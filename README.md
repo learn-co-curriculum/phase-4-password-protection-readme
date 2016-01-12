@@ -2,7 +2,7 @@
 
 ## Overview
 
-It's quite difficult to manage passwords securely. About once a month, there is another big hack in the news, and all the passwords and credit card from some poor site shows up on bittorrent.
+It's quite difficult to manage passwords securely. About once a month, there is another big hack in the news, and all the passwords and credit cards from some poor site shows up on bittorrent.
 
 Rails provides us with tools to store passwords relatively securely, so that when hackers break into your servers, they don't gain access to users' actual passwords.
 
