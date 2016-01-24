@@ -33,7 +33,7 @@ Even if you don't care about the security of your site, people have a strong ten
 
 ## Hashing passwords
 
-So how do we store passwords if we can't store passwords?
+soyoc how do we store passwords if we can't store passwords?
 
 We store their hashes. A *hash* is a number computed by feeding a string to a *hash function*. Hash functions have the property that they will always produce the same number given the same input. You could write one yourself. Here's one that I just made:
 
