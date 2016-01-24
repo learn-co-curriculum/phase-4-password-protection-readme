@@ -75,6 +75,9 @@ We could imagine using this function to avoid storing passwords in the database.
      end
    end
 
+[`try`][try] is an ActiveSupport method. `object.try(:some_method)` means
+`if object != nil then object.some_method else nil end`.
+
 In this world, we have saved the passwords' hashes in the database, in the `password_digest` column. We are not storing the passwords themselves.
 
 You can set a user's password by saying `user.password = *new_password*`. Presumably, our `UsersController` would do this, but we're not worrying about it for the moment.
@@ -203,3 +206,4 @@ These fields are designed to make it easy to include a password confirmation box
 [rainbow_table]: https://en.wikipedia.org/wiki/Rainbow_table
 [bcrypt]: https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf
 [has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
+[try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
