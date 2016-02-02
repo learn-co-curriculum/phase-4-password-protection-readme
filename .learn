@@ -1,0 +1,8 @@
+tags:
+  - has_secure_password
+  - login
+  - flash
+languages:
+  - Ruby
+resources:
+  - http://api.rubyonrails.org/classes/ActionDispatch/Flash.html  
