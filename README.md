@@ -211,7 +211,7 @@ These fields are designed to make it easy to include a password confirmation box
 ## Resources
   * [Wikipedia — Murmur Hash][murmur]
   * [Wikipedia — Rainbow Table][rainbow_table]
-  * [bcrypt USENIX paper]: https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf
+  * [bcrypt USENIX paper](https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf)
   * [Rails documentation — has_secure_password][has_secure_password]
 
 [murmur]: https://en.wikipedia.org/wiki/MurmurHash
