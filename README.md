@@ -73,7 +73,7 @@ We could imagine using this function to avoid storing passwords in the database.
    class SessionsController < ApplicationController
      def create
        user = User.find_by(username: params[:username])
-       authenticated = user.try(:authenticate, params[:pasword])
+       authenticated = user.try(:authenticate, params[:password])
        return head(:forbidden) unless authenticated
        @user = user
        session[:user_id] = @user.id
@@ -219,3 +219,5 @@ These fields are designed to make it easy to include a password confirmation box
 [bcrypt]: https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf
 [has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
+
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
