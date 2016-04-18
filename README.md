@@ -183,7 +183,7 @@ These fields are designed to make it easy to include a password confirmation box
     # app/controllers/users_controller.rb
     class UsersController < ApplicationController
       def create
-        user = User.new(user_params).save!
+        user = User.new(user_params).save
       end
 
       private
