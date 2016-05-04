@@ -191,9 +191,9 @@ These fields are designed to make it easy to include a password confirmation box
       def user_params
         params.require(:user).permit(:name, :email, :password, :password_confirmation)
       end
-    app
+    end
 
-    # end/controllers/sessions_controller.rb
+    # app/controllers/sessions_controller.rb
     class SessionsController < ApplicationController
       def create
         @user = User.find(username: params[:username])
@@ -221,3 +221,5 @@ These fields are designed to make it easy to include a password confirmation box
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
