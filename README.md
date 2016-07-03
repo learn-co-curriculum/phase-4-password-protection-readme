@@ -123,7 +123,7 @@ It doesn't really matter that this is going to take long time to run—I'm just 
 
 Now, when I get your database, I just look and see if any of the passwords there are in my rainbow table. If they are, then I know the password.
 
-The solution to this problem is *salting* our passwords. A salt is a random string appended to the password before hashing it. It's stored in plain text next to the password, so it's not a secret. But the fact that it's there makes an attacker's life much more difficult: it's very unlikely that I constructed my rainbow table with your particular salt in mind, so I'm back to running the hash algorithm over and over as I guess passwords. And remember, Bcrypt is designed to be expensive to run.
+The solution to this problem is *salting* our passwords. A salt is a random string prepended to the password before hashing it. It's stored in plain text next to the password, so it's not a secret. But the fact that it's there makes an attacker's life much more difficult: it's very unlikely that I constructed my rainbow table with your particular salt in mind, so I'm back to running the hash algorithm over and over as I guess passwords. And remember, Bcrypt is designed to be expensive to run.
 
 So let's update our `User` model to use bcrypt:
 
