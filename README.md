@@ -208,6 +208,10 @@ These fields are designed to make it easy to include a password confirmation box
     end
 ```
 
+## Video Review
+
+* [Authentication](https://github.com/learn-co-curriculum/rails-video-review-authentication)
+
 ## Resources
   * [Wikipedia — Murmur Hash][murmur]
   * [Wikipedia — Rainbow Table][rainbow_table]
@@ -219,7 +223,5 @@ These fields are designed to make it easy to include a password confirmation box
 [bcrypt]: https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf
 [has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
-
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
 
 <p class='util--hide'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
