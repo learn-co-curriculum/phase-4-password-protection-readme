@@ -210,7 +210,7 @@ These fields are designed to make it easy to include a password confirmation box
 
 ## Video Review
 
-* [Authentication](https://github.com/learn-co-curriculum/rails-video-review-authentication)
+* [Authentication](https://www.youtube.com/watch?v=gB7lYvfL4J4)
 
 ## Resources
   * [Wikipedia — Murmur Hash][murmur]
