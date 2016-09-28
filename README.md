@@ -17,7 +17,7 @@ Let's imagine a `SessionsController#create` method that does very simple authent
 
 ```ruby
 def create
-  @user = User.find(username: params[:username])
+  @user = User.find_by(username: params[:username])
   return head(:forbidden) unless params[:password] == @user.password
   session[:user_id] = @user.id
 end
@@ -194,7 +194,7 @@ end
 # app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
   def create
-    @user = User.find(username: params[:username])
+    @user = User.find_by(username: params[:username])
     return head(:forbidden) unless @user.authenticate(params[:password])
     session[:user_id] = @user.id
   end
@@ -222,3 +222,5 @@ end
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme' title='Using has_secure_password'>Using `has_secure_password`</a> on Learn.co and start learning to code for free.</p>
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
