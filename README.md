@@ -187,7 +187,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :password, :password_confirmation)
   end
 end
 
@@ -222,3 +222,5 @@ end
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme' title='Using has_secure_password'>Using `has_secure_password`</a> on Learn.co and start learning to code for free.</p>
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/has_secure_password_readme'>Using has_secure Password </a> on Learn.co and start learning to code for free.</p>
