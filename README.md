@@ -169,7 +169,7 @@ You'll need to add `gem 'bcrypt'` to your Gemfile if it isn't already.
 
 These fields are designed to make it easy to include a password confirmation box when creating or updating a user. All together, our very secure app might look like this:
 
-```ruby
+```erb
 # app/views/user/new.html.erb
 <%= form_for :user, url: '/users' do |f| %>
   Username: <%= f.text_field :username %>
