@@ -177,7 +177,8 @@ These fields are designed to make it easy to include a password confirmation box
   Password Confirmation: <%= f.password_field :password_confirmation %>
   <%= f.submit "Submit" %>
 <% end %>
-
+```
+```ruby
 # app/controllers/users_controller.rb
 class UsersController < ApplicationController
   def create
@@ -190,7 +191,8 @@ class UsersController < ApplicationController
     params.require(:user).permit(:username, :password, :password_confirmation)
   end
 end
-
+```
+```ruby
 # app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
   def create
@@ -199,7 +201,8 @@ class SessionsController < ApplicationController
     session[:user_id] = @user.id
   end
 end
-
+```
+```ruby
 # app/models/user.rb
 class User < ActiveRecord::Base
   has_secure_password
