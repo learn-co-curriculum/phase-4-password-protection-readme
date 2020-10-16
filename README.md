@@ -223,5 +223,3 @@ end
 [rainbow_table]: https://en.wikipedia.org/wiki/Rainbow_table
 [has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
 [try]: http://api.rubyonrails.org/classes/Object.html#method-i-try
-
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/has_secure_password_readme' title='Using has_secure_password'>Using <code>has_secure_password</code></a> on Learn.co and start learning to code for free.</p>
