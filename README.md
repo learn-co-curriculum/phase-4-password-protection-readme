@@ -1,4 +1,4 @@
-# Using `has_secure_password`
+# Has Secure Password
 
 ## Overview
 
@@ -7,6 +7,7 @@ It's quite difficult to manage passwords securely. About once a month, there is 
 Rails provides us with tools to store passwords relatively securely so that when hackers break into your servers they don't gain access to users' actual passwords.
 
 ## Objectives
+
 1. Explain why it's a bad idea to store passwords in plaintext.
 2. Write code to store and verify hashed, salted passwords.
 3. Use Rails's `has_secure_password` to store and authenticate user login credentials securely.
@@ -35,7 +36,7 @@ Even if you don't care about the security of your site, people have a strong ten
 
 So how do we store passwords if we can't store passwords?
 
-We store their hashes. A *hash* is a number computed by feeding a string to a *hash function*. Hash functions have the property that they will always produce the same number given the same input. You could write one yourself. Here's a very simple one:
+We store their hashes. A _hash_ is a number computed by feeding a string to a _hash function_. Hash functions have the property that they will always produce the same number given the same input. You could write one yourself. Here's a very simple one:
 
 ```ruby
 # dumb_hash(input: string) -> number
@@ -54,14 +55,14 @@ class User < ActiveRecord::Base
   def password=(new_password)
     self.password_digest = dumb_hash(new_password)
   end
-  
+
   def authenticate(password)
     return nil unless dumb_hash(password) == password_digest
     self
   end
-  
+
   private
-  
+
   def dumb_hash(input)
     input.bytes.reduce(:+)
   end
@@ -88,7 +89,7 @@ You can set a user's password by saying `user.password = *new_password*`. Presum
 
 `dumb_hash` is, as its name suggests, a pretty dumb hash function to use for this purpose. It's a poor choice because similar strings hash to similar values. If my password was 'Joshua', you could log in as me by entering the password 'Jnshub'. Since 'n' is one less than 'o' and 'b' is one more than 'a', the output of `dumb_hash` would be the same.
 
-This is known as a *collision*. Collisions are inevitable when you're writing a hash function, since hash functions usually produce either a 32-bit or 64-bit number, and the space of all possible strings is much larger than either `2**32` or `2**64`.
+This is known as a _collision_. Collisions are inevitable when you're writing a hash function, since hash functions usually produce either a 32-bit or 64-bit number, and the space of all possible strings is much larger than either `2**32` or `2**64`.
 
 Fortunately, smart people who have thought about this a lot have written a lot of different hash functions which are well-suited to different purposes. And nearly all hash functions are designed with the quality that strings which are similar but not the same hash to significantly different values.
 
@@ -103,9 +104,10 @@ Ruby internally uses [MurmurHash][murmur], which produces better results for thi
 But Murmur still isn't ideal, because while it does not produce collisions so readily, it is still not difficult to produce them if that's what you're trying to do.
 
 Instead, Rails uses BCrypt. BCrypt is designed with these properties in mind:
-  1. BCrypt hashes similar strings to very different values.
-  2. It is a *cryptographic hash*. That means that, if you have an output in mind, finding a string which produces that output is designed to be "very difficult." "Very difficult" means "even if Google put all their computers on it, they couldn't do it."
-  3. BCrypt is designed to be slow — it is intentionally computationally expensive.
+
+1. BCrypt hashes similar strings to very different values.
+2. It is a _cryptographic hash_. That means that, if you have an output in mind, finding a string which produces that output is designed to be "very difficult." "Very difficult" means "even if Google put all their computers on it, they couldn't do it."
+3. BCrypt is designed to be slow — it is intentionally computationally expensive.
 
 The last two features make BCrypt a particularly good choice for passwords. (2) means that, even if an attacker gets your database of hashed passwords, it is not easy for them to turn a hash back into its original string. (3) means that, even if an attacker has a dictionary of common passwords to check against, it will still take them a considerable amount of time to check for your password against that list.
 
@@ -121,7 +123,7 @@ It doesn't really matter that this is going to take long time to run — I'm onl
 
 Now, when I get your database, I just look and see if any of the passwords there are in my rainbow table. If they are, then I know the password.
 
-The solution to this problem is *salting* our passwords. A salt is a random string prepended to the password before hashing it. It's stored in plain text next to the password, so it's not a secret. But the fact that it's there makes an attacker's life much more difficult: it's very unlikely that I constructed my rainbow table with your particular salt in mind, so I'm back to running the hash algorithm over and over as I guess passwords. And, remember, BCrypt is designed to be expensive to run.
+The solution to this problem is _salting_ our passwords. A salt is a random string prepended to the password before hashing it. It's stored in plain text next to the password, so it's not a secret. But the fact that it's there makes an attacker's life much more difficult: it's very unlikely that I constructed my rainbow table with your particular salt in mind, so I'm back to running the hash algorithm over and over as I guess passwords. And, remember, BCrypt is designed to be expensive to run.
 
 Let's update our `User` model to use BCrypt:
 
@@ -178,6 +180,7 @@ These fields are designed to make it easy to include a password confirmation box
   <%= f.submit "Submit" %>
 <% end %>
 ```
+
 ```ruby
 # app/controllers/users_controller.rb
 class UsersController < ApplicationController
@@ -192,6 +195,7 @@ class UsersController < ApplicationController
   end
 end
 ```
+
 ```ruby
 # app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
@@ -202,6 +206,7 @@ class SessionsController < ApplicationController
   end
 end
 ```
+
 ```ruby
 # app/models/user.rb
 class User < ActiveRecord::Base
@@ -211,13 +216,14 @@ end
 
 ## Video Review
 
-* [Authentication](https://www.youtube.com/watch?v=gB7lYvfL4J4)
+- [Authentication](https://www.youtube.com/watch?v=gB7lYvfL4J4)
 
 ## Resources
-* [Wikipedia — Murmur Hash][murmur]
-* [Wikipedia — Rainbow Table][rainbow_table]
-* [BCrypt USENIX paper](https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf)
-* [Rails documentation — `has_secure_password`][has_secure_password]
+
+- [Wikipedia — Murmur Hash][murmur]
+- [Wikipedia — Rainbow Table][rainbow_table]
+- [BCrypt USENIX paper](https://www.usenix.org/legacy/event/usenix99/provos/provos.pdf)
+- [Rails documentation — `has_secure_password`][has_secure_password]
 
 [murmur]: https://en.wikipedia.org/wiki/MurmurHash
 [rainbow_table]: https://en.wikipedia.org/wiki/Rainbow_table
