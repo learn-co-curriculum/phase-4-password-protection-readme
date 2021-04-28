@@ -1,4 +1,4 @@
-# Has Secure Password
+# Using `has_secure_password`
 
 ## Overview
 
