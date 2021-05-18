@@ -276,10 +276,23 @@ end
 To use the `has_secure_password` macro, you'll need to add `gem 'bcrypt'` to
 your Gemfile if it isn't already.
 
+When using [`has_secure_password`][has_secure_password], Rails will use the
+`bcrypt` gem to hash and salt all passwords on the `User` model.
+
 [`has_secure_password`][has_secure_password] adds two fields to your model:
 `password` and `password_confirmation`. These fields don't correspond to
 database columns! Instead, the method expects there to be a `password_digest`
-column defined in your migrations.
+column defined in your migrations. To make this work, your `users` table
+**must** have a `password_digest` column:
+
+```rb
+create_table :users do |t|
+  t.string :username
+  t.string :password_digest
+
+  t.timestamps
+end
+```
 
 `has_secure_password` also adds some `before_save` hooks to your model. These
 compare `password` and `password_confirmation`. If they match (or if
