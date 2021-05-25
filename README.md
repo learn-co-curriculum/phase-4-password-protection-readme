@@ -15,12 +15,6 @@ poor site show up on the dark web.
 Rails provides us with tools to store passwords securely so that even if our
 database is compromised, no one can gain access to users' actual passwords.
 
-## Objectives
-
-1. Explain why it's a bad idea to store passwords in plaintext.
-2. Write code to store and verify hashed, salted passwords.
-3. Use Rails's `has_secure_password` to store and authenticate user login credentials securely.
-
 ## The problem with passwords
 
 Let's imagine a `SessionsController#create` method that does very simple
