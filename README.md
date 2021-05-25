@@ -310,7 +310,11 @@ function SignUp({ onLogin }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password, password_confirmation }),
+      body: JSON.stringify({
+        username,
+        password,
+        password_confirmation: passwordConfirmation,
+      }),
     })
       .then((r) => r.json())
       .then(onLogin);
