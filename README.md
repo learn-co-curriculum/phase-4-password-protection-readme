@@ -391,6 +391,18 @@ class User < ActiveRecord::Base
 end
 ```
 
+## Conclusion
+
+When dealing with users' passwords, it's important for security that we never
+store passwords in our database directly in plain text. Instead, we can use a
+trusted library like BCrypt to help keep our users' passwords safe thanks to
+their hashing and salting algorithm.
+
+To use BCrypt, we need to install the gem; then, we can use the
+`has_secure_password` macro on a model (provided that model has a
+`password_digest` column in the database table) to provide the password encryption
+and authentication code.
+
 ## Resources
 
 - [Wikipedia — Murmur Hash][murmur]
