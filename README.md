@@ -275,11 +275,10 @@ your Gemfile if it isn't there already.
 When using [`has_secure_password`][has_secure_password], Rails will use the
 `bcrypt` gem to hash and salt all passwords on the `User` model.
 
-The [`has_secure_password`][has_secure_password] method will also recognize and
-automatically handle two fields in your form: `password` and
-`password_confirmation`. These fields don't correspond to database columns!
-Instead, to make this work, your `users` table **must** have a `password_digest`
-column:
+The [`has_secure_password`][has_secure_password] method also provides two new
+instance methods on your `User` model: `password` and `password_confirmation`.
+These methods don't correspond to database columns! Instead, to make these
+methods work, your `users` table **must** have a `password_digest` column:
 
 ```rb
 create_table :users do |t|
@@ -290,17 +289,18 @@ create_table :users do |t|
 end
 ```
 
-`has_secure_password` handles these fields by adding a `before_save` hook to
-your model that compares `password` and `password_confirmation`. If they match
-(or if `password_confirmation` is `nil`, i.e., if a password confirmation is not
-required), it then updates the `password_digest` column pretty much exactly like
-our example code before did.
+These two instance methods enable you to easily include password and password
+confirmation fields in a form. `has_secure_password` handles these fields by
+adding a `before_save` hook to your model that compares `password` and
+`password_confirmation`. If they match (or if `password_confirmation` is `nil`,
+i.e., if password confirmation is not required), it then updates the
+`password_digest` column pretty much exactly like our example code before did.
 
 `has_secure_password` makes it easy to include password and password
-confirmation fields on your signup form. The two fields could also be included
+confirmation fields on a signup form. The two fields could also be included
 on a form that updates the user's account — e.g., a password reset form — just
 as easily. `has_secure_password` also handles the case where a password
-confirmation is not requested (e.g., a login form).
+confirmation is not requested and `password_confirmation` is `nil`.
 
 All together, the code implementing the signup functionality of our very secure
 app might look like this:
