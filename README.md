@@ -54,7 +54,7 @@ users.
 So how do we store passwords if we can't store passwords?
 
 Instead of storing their password in plain text, we store a hashed version of
-their password. A _hash_ is a fixed-length output computed by feeding a string
+their password. A _hash_ is a _fixed-length_ output computed by feeding a string
 to a _hash function_. Hash functions have the property that they will always
 produce the same output given the same input.
 
@@ -78,8 +78,8 @@ end
 
 This `dumb_hash` function just finds the sum of the bytes that comprise the
 string. It satisfies the criterion that the same string always produces the same
-result. (It doesn't quite meet the "fixed-length output" requirement, but for
-demo purposes, it'll do.)
+result. (It doesn't quite meet the "fixed-length output" requirement for hashes,
+but for demo purposes, it'll do.)
 
 We could imagine using this function to avoid storing passwords in the database.
 Our `User` model and `SessionsController` might look like this:
@@ -93,7 +93,7 @@ class User < ApplicationRecord
     self.password_digest = dumb_hash(new_password)
   end
 
-  # checks if the plaintext password matches the password_digest
+  # checks if the hashed plaintext password matches the password_digest
   def authenticate(password)
     return nil unless dumb_hash(password) == password_digest
     self
@@ -129,25 +129,27 @@ end
 In this world, we have saved the password hashes in a `password_digest` column
 in the database. We are not storing the passwords themselves.
 
-You can set a user's password by saying `user.password = *new_password*`.
-Presumably, our `UsersController` would do this, but we're not worrying about it
-for the moment.
+With the code above, a user's password is set by calling `user.password =
+*new_password*`. Presumably, our `UsersController` would do this, but we're not
+worrying about that for the moment.
 
 `dumb_hash` is, as its name suggests, a pretty dumb hash function to use for
 this purpose. It's a poor choice because similar strings hash to similar values.
 If my password was `Joshua`, you could log in as me by entering the password
 `Jnshub`. Since 'n' is one less than 'o' and 'b' is one more than 'a', the
-output of `dumb_hash` would be the same.
+output of `dumb_hash` would be the same. This is known as a _collision_. With
+`dumb_hash` as our hashing function, there would be many, similar, variants of
+our `Joshua` password (many collisions) that could be used successfully to
+access the account, making our authentication process much less secure.
 
-This is known as a _collision_. Collisions are inevitable when you're writing a
-hash function, since hash functions usually produce either a 32-bit or 64-bit
-number, and the space of all possible strings is much larger than either `2**32`
-or `2**64`.
-
-Fortunately, smart people who have thought about this a lot have written a lot
-of different hash functions which are well-suited to different purposes. And
-nearly all hash functions are designed with the quality that strings which are
-similar but not the same hash to significantly different values.
+Unfortunately, collisions are inevitable when you're writing a hash function,
+since hash functions usually produce either a 32-bit or 64-bit number, and the
+space of all possible strings is much larger than either `2**32` or `2**64`.
+Fortunately, however, smart people who have thought about this a lot have
+written a lot of different hash functions which are well-suited to different
+purposes. And nearly all hash functions are designed with the quality that
+strings that are similar but not the same hash to significantly different
+values.
 
 Ruby internally uses [MurmurHash][murmur], which produces better results for this:
 
@@ -200,7 +202,7 @@ It doesn't really matter that this is going to take long time to run — I'm
 only doing it once. Let's call this mapping of strings to hash outputs a
 ["rainbow table"][rainbow_table].
 
-Now, when I get your database, I just look and see if any of the passwords there
+Now, when I get your database, I just look and see if any of the passwords in it
 are in my rainbow table. If they are, then I know the password.
 
 Going back to our smoothie analogy, this would be the equivalent of someone
@@ -258,8 +260,8 @@ match, you're in. If they don't, no dice.
 ## Rails Makes It Easier
 
 You don't have to deal with all this yourself. Rails provides a method called
-`has_secure_password` that you can use on your Active Record models to handle all
-this. It looks like this:
+`has_secure_password` that you can use on your Active Record models to handle
+all of this. It looks like this:
 
 ```ruby
 class User < ApplicationRecord
@@ -268,16 +270,16 @@ end
 ```
 
 To use the `has_secure_password` macro, you'll need to add `gem 'bcrypt'` to
-your Gemfile if it isn't already.
+your Gemfile if it isn't there already.
 
 When using [`has_secure_password`][has_secure_password], Rails will use the
 `bcrypt` gem to hash and salt all passwords on the `User` model.
 
-[`has_secure_password`][has_secure_password] adds two fields to your model:
-`password` and `password_confirmation`. These fields don't correspond to
-database columns! Instead, the method expects there to be a `password_digest`
-column defined in your migrations. To make this work, your `users` table
-**must** have a `password_digest` column:
+The [`has_secure_password`][has_secure_password] method will also recognize and
+automatically handle two fields in your form: `password` and
+`password_confirmation`. These fields don't correspond to database columns!
+Instead, to make this work, your `users` table **must** have a `password_digest`
+column:
 
 ```rb
 create_table :users do |t|
@@ -288,14 +290,20 @@ create_table :users do |t|
 end
 ```
 
-`has_secure_password` also adds some `before_save` hooks to your model. These
-compare `password` and `password_confirmation`. If they match (or if
-`password_confirmation` is `nil`), then it updates the `password_digest` column
-pretty much exactly like our example code before did.
+`has_secure_password` handles these fields by adding a `before_save` hook to
+your model that compares `password` and `password_confirmation`. If they match
+(or if `password_confirmation` is `nil`, i.e., if a password confirmation is not
+required), it then updates the `password_digest` column pretty much exactly like
+our example code before did.
 
-These fields are designed to make it easy to include a password confirmation box
-when creating or updating a user. All together, our very secure app might look
-like this:
+`has_secure_password` makes it easy to include password and password
+confirmation fields on your signup form. The two fields could also be included
+on a form that updates the user's account — e.g., a password reset form — just
+as easily. `has_secure_password` also handles the case where a password
+confirmation is not requested (e.g., a login form).
+
+All together, the code implementing the signup functionality of our very secure
+app might look like this:
 
 ```jsx
 function SignUp({ onLogin }) {
