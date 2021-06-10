@@ -290,17 +290,20 @@ end
 ```
 
 These two instance methods enable you to easily include password and password
-confirmation fields in a form. `has_secure_password` handles these fields by
-adding a `before_save` hook to your model that compares `password` and
-`password_confirmation`. If they match (or if `password_confirmation` is `nil`,
-i.e., if password confirmation is not required), it then updates the
-`password_digest` column pretty much exactly like our example code before did.
+confirmation fields in a signup (or password reset) form. `has_secure_password`
+handles these fields by adding a `before_save` hook to your model that compares
+`password` and `password_confirmation`. If they match (or if
+`password_confirmation` is `nil`), the user is saved and the hashed version of
+the password is stored in the `password_digest` column of the database, pretty
+much exactly like our example code before did.
 
-`has_secure_password` makes it easy to include password and password
-confirmation fields on a signup form. The two fields could also be included
-on a form that updates the user's account — e.g., a password reset form — just
-as easily. `has_secure_password` also handles the case where a password
-confirmation is not requested and `password_confirmation` is `nil`.
+Under the hood, `has_secure_password` calls upon an Active Record helper method,
+[`validates_confirmation_of`][validates_confirmation_of]. As such, as with other
+Active Record validator methods, when the fields don't match and the validation
+fails, an `ActiveRecord::RecordInvalid` exception will be raised. You can handle
+this exception by using `rescue` or `rescue_from`.
+
+[validates_confirmation_of](https://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_confirmation_of)
 
 All together, the code implementing the signup functionality of our very secure
 app might look like this:
