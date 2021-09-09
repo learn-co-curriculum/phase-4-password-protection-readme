@@ -4,7 +4,7 @@
 
 - Explain why it's a bad idea to store passwords in plaintext
 - Write code to store and verify hashed, salted passwords
-- Use Rails's `has_secure_password` to store and authenticate user login credentials securely
+- Use Rails' `has_secure_password` to store and authenticate user login credentials securely
 
 ## Introduction
 
@@ -53,10 +53,10 @@ users.
 
 So how do we store passwords if we can't store passwords?
 
-Instead of storing their password in plain text, we store a hashed version of
-their password. A _hash_ is a _fixed-length_ output computed by feeding a string
-to a _hash function_. Hash functions have the property that they will always
-produce the same output given the same input.
+Instead of storing users' passwords in plain text, we store a hashed version of
+them. A _hash_ is a _fixed-length_ output computed by feeding a string to a
+_hash function_. Hash functions have the property that they will always produce
+the same output given the same input.
 
 A helpful analogy for a hash function is making a smoothie. If I put the
 exact same ingredients into the blender, I'll get the exact same smoothie
@@ -146,7 +146,7 @@ Unfortunately, collisions are inevitable when you're writing a hash function,
 since hash functions usually produce either a 32-bit or 64-bit number, and the
 space of all possible strings is much larger than either `2**32` or `2**64`.
 Fortunately, however, smart people who have thought about this a lot have
-written a lot of different hash functions which are well-suited to different
+written a lot of different hash functions that are well-suited to different
 purposes. And nearly all hash functions are designed with the quality that
 strings that are similar but not the same hash to significantly different
 values.
@@ -303,8 +303,6 @@ Active Record validator methods, when the fields don't match and the validation
 fails, an `ActiveRecord::RecordInvalid` exception will be raised. You can handle
 this exception by using `rescue` or `rescue_from`.
 
-[validates_confirmation_of](https://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_confirmation_of)
-
 All together, the code implementing the signup functionality of our very secure
 app might look like this:
 
@@ -426,3 +424,4 @@ and authentication code.
 [has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
 [safe navigation]: https://mitrev.net/ruby/2015/11/13/the-operator-in-ruby/
 [bcrypt]: https://github.com/bcrypt-ruby/bcrypt-ruby
+[validates_confirmation_of]: https://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_confirmation_of
