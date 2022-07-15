@@ -4,7 +4,8 @@
 
 - Explain why it's a bad idea to store passwords in plaintext
 - Write code to store and verify hashed, salted passwords
-- Use Rails' `has_secure_password` to store and authenticate user login credentials securely
+- Use Rails' `has_secure_password` to store and authenticate user login
+  credentials securely
 
 ## Introduction
 
@@ -58,10 +59,10 @@ them. A _hash_ is a _fixed-length_ output computed by feeding a string to a
 _hash function_. Hash functions have the property that they will always produce
 the same output given the same input.
 
-A helpful analogy for a hash function is making a smoothie. If I put the
-exact same ingredients into the blender, I'll get the exact same smoothie
-every time. But there's no way to reverse the operation, and get back the
-original ingredients from the smoothie.
+A helpful analogy for a hash function is making a smoothie. If I put the exact
+same ingredients into the blender, I'll get the exact same smoothie every time.
+But there's no way to reverse the operation, and get back the original
+ingredients from the smoothie.
 
 Hash functions work in a similar way: given the same input, they'll always
 produce the same output; and there's no way to reverse the output and recreate
@@ -129,9 +130,9 @@ end
 In this world, we have saved the password hashes in a `password_digest` column
 in the database. We are not storing the passwords themselves.
 
-With the code above, a user's password is set by calling `user.password =
-*new_password*`. Presumably, our `UsersController` would do this, but we're not
-worrying about that for the moment.
+With the code above, a user's password is set by calling
+`user.password = *new_password*`. Presumably, our `UsersController` would do
+this, but we're not worrying about that for the moment.
 
 `dumb_hash` is, as its name suggests, a pretty dumb hash function to use for
 this purpose. It's a poor choice because similar strings hash to similar values.
@@ -148,10 +149,11 @@ space of all possible strings is much larger than either `2**32` or `2**64`.
 Fortunately, however, smart people who have thought about this a lot have
 written a lot of different hash functions that are well-suited to different
 purposes. And nearly all hash functions are designed with the quality that
-strings that are similar but not the same hash to significantly different
+strings that are similar, but not the same, will hash to significantly different
 values.
 
-Ruby internally uses [MurmurHash][murmur], which produces better results for this:
+Ruby internally uses [MurmurHash][murmur], which produces better results for
+this:
 
 ```rb
 'Joshua'.hash
@@ -198,9 +200,9 @@ most common passwords and hash them with BCrypt. I can do around 1,000 hashes
 per second, so that's about three hours. Maybe I'll do the top five hundred
 million just to be sure.
 
-It doesn't really matter that this is going to take long time to run — I'm
-only doing it once. Let's call this mapping of strings to hash outputs a
-["rainbow table"][rainbow_table].
+It doesn't really matter that this is going to take long time to run — I'm only
+doing it once. Let's call this mapping of strings to hash outputs a ["rainbow
+table"][rainbow_table].
 
 Now, when I get your database, I just look and see if any of the passwords in it
 are in my rainbow table. If they are, then I know the password.
@@ -422,7 +424,9 @@ Before you move on, make sure you can answer the following questions:
 
 [murmur]: https://en.wikipedia.org/wiki/MurmurHash
 [rainbow_table]: https://en.wikipedia.org/wiki/Rainbow_table
-[has_secure_password]: http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
+[has_secure_password]:
+  http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html
 [safe navigation]: https://mitrev.net/ruby/2015/11/13/the-operator-in-ruby/
 [bcrypt]: https://github.com/bcrypt-ruby/bcrypt-ruby
-[validates_confirmation_of]: https://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_confirmation_of
+[validates_confirmation_of]:
+  https://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_confirmation_of
